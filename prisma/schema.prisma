@@ -1,0 +1,28 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./node_modules/@prisma/client"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+model Test {
+  id          Int        @id @default(autoincrement())
+  name        String
+  description String?
+  questions   Question[]
+  createdAt   DateTime   @default(now())
+}
+
+model Question {
+  id        Int      @id @default(autoincrement())
+  text      String
+  options   Json
+  answer    String
+  testId    Int
+  test      Test     @relation(fields: [testId], references: [id])
+  token     String?
+  createdAt DateTime @default(now())
+}
+
